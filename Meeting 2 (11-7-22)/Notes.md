@@ -6,3 +6,4 @@
 
 - Problem 1 - [Alphabetical strings](https://codeforces.com/problemset/problem/1547/B)
 - Problem 2 - [Optimal path](https://codeforces.com/problemset/problem/1700/A)
+- Problem 3 - [Permutation Operations](https://codeforces.com/problemset/problem/1746/C) (challenge problem)
