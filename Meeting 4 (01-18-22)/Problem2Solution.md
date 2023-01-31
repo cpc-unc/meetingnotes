@@ -121,20 +121,137 @@ public:
 };
 ```
 
+Now let's try to implement the bulk of the task: the DFS algorithm specific to this task.
+Let's say we're trying to find the value `a / d`, and we have the values of `a / b`, `b / c`, and `c / d`.
+Then, $\frac{a}{d} = \frac{a}{b} * \frac{b}{c} * \frac{c}{d}$. This can be found because `a` is connected to `b`, which is connected to `c`, which is connected to `d`. The way we say this is `a` &rarr; `b` &rarr; `c` &rarr; `d`.
+
+What if we didn't have `b / c` but we did have `d / b`?
+Then, $\frac{a}{d} = \frac{a}{b} * \frac{b}{d}$. Again, since we have `d / b`, we know what `b / d` is.
+
+## Theorem
+
+If we have a path of nodes $x_1$ &rarr; $x_2$ &rarr; ... &rarr; $x_n$, (assuming $x_i \neq 0$ for all i = ${1, ..., n}$), then we can find the value of $x_1 / x_n$.
+
+## Proof
+
+Let's say we have a path from $x_i$ to $x_{i+1}$. This means we know what $x_i / x_{i+1}$ is. Let $k_i$ = $x_i / x_{i+1}$, which is known for all $i$.
+Then $\frac{x_1}{x_n} = \frac{x_1}{x_2} * \frac{x_2}{x_3} * ... * \frac{x_{n-1}}{x_n} = k_1 * k_2 * ... * k_n$
 
 
-##Solution explanation is incomplete
+So, this problem can now simply turn into a DFS algorithm:
 
+```cpp
+void dfs(int s) {
+    if (visited[s]) return;
+        visited[s] = true;
+        // process node s
+        for (auto u: adj[s]) {
+            dfs(u);
+        }
+}
+```
 
+I don't believe this is the most efficient solution of a DFS for this algorithm. But it's pretty explanatory.
 
+If I call the function `dfs` with the parameters `start` and `end`, I want the value `start / end`. This function will output 2 values, `ans` (double) and `found` (boolean) as a `pair<double, bool>` in C++. If `found` is false, then we haven't been able to find `start / end` from this node. If `found` is true, then `start / end` = `ans`.
+The parameter `current` is the node that it is currently processing.
 
+An explanation of the value `v` can be given through an example. If there's a path `a` &rarr; `b` &rarr; `c` &rarr; `d` and we're currently processing the node `d`, the value `v` is going to be equal to `a/b * b/c * c/d`.
 
+## Example of what we want to do
 
+If we're trying to find `a / d`, and we have a path `a` &rarr; `b` &rarr; `c` &rarr; `d`. Let's say we also have a path `a` &rarr; `c` &rarr; `e`. We're gonna start with `a` by running `dfs("a", "d", "a", 1)`. (`v` = 1 because the only one in the chain so far is `a`, which means `a/a` = 1. See the definition for `v` above).
 
+Let's say we're going down the list, and we encounter the node `b` which is currently the `current` node.
 
+Here's what we want to do:
+1. Iterate through all the nodes that `b` points to (which in this case, is just `c` as `b` &rarr; `c`).
+    For each node that `b` points to (which we call `i` in the code):
+    1. See if `i` is marked. If it is, don't process on `i` anymore, move onto the next node `i` that `b` is adjacent to.
+        (Spoiler: `i` = `c` isn't marked.)
+    2. If `i` equals `d`, then we have a complete path from `a` to `d`. Then we return the multiplied value of the fractions from `a` to `d`.
+        Since `v` = `a/b`, the answer should be `a/b * b/d`, which is `v * b/d`.
+        The value of `b/d` can be obtained by finding `graph["b"]["d"]`. In this case, `i` already gives us the pair `("c", b/d)` (which is kind of like a string-double tuple).
+        `i.first` gives us the string `"d"` and `i.second` gives us the double value of the equation `b/d`.
+        So now the new output should equal `v * i.second`, and `true` for the boolean output as we have now found the answer.
+    3. If `i` doesn't equal `d` (which in this case it won't. It's going to only equal `c`).
+        1. Run the DFS again on this sub-node.
+            Then the "new" `v` is going to equal `v` * `b/c` = `a/b * b/c`.
+            This function call will be `dfs("a", "d", "c", v * i.second)` (as `i.second` gives us the actual value of `graph[current][i]`, or in this case, `graph["b"]["c"]` which is `b/c`).
+        2. If this sub-DFS returns true, then we return this value.
+2. If we're outside the for loop, that means we haven't returned anything yet. This means that there is *no path* from `current` to `end`. So, we output `false` for the boolean value.
 
+Again, I want a set called `marked` to keep track of which nodes are visited.
+(Btw, I the first function's code has been removed temporarily to explain the functionality of the DFS).
 
-Solution:
+```cpp
+class Solution {
+    unordered_set<string> marked;
+
+    pair<double, bool> dfs(string start, string end, string current, double v) {
+        marked.insert(current); // Mark the current node so we don't process it again
+
+        // We get the map of all the variables that current points to
+        unordered_map adj = graph[current];
+
+        bool found = false;
+        double ans = v;
+
+        for(auto i : adj) {
+            // i is a pair of numbers.
+            // current / i.first = i.second
+                // This means current and i.first are both strings, and i.second is a double.
+
+            // Step 1.1
+            if(marked.count(i.first)) continue;
+
+            if(i.first == end) {
+                // Step 1.2
+                return make_pair(v * i.second, true); 
+            } else {
+                // Step 1.3
+                auto nxt = dfs(start, end, i.first, v*i.second);
+                if(nxt.second){
+                    // Step 1.3.2
+                    return make_pair(nxt.first, nxt.second);
+                }
+            }
+        }
+
+        // Step 2
+        return make_pair(v, false);
+    }
+};
+```
+
+And now, we finally finish the else statement that was incomplete:
+
+```cpp
+
+// Bunch of removed code
+
+    for(int i = 0; i < queries.size(); i++) {
+        marked.clear();
+        if(!vars.count(queries[i][0]) || !vars.count(queries[i][1])) {
+            answer.push_back(-1);
+        } else if(zeros.count(queries[i][0])) {
+            answer.push_back(0);
+        } else if(zeros.count(queries[i][1])) {
+            answer.push_back(-1);
+        } else if(queries[i][1] == queries[i][0]) {
+            answer.push_back(1);
+        } else {
+
+            // Run the DFS on the starting node. The value of v, naturally, is 1.
+            auto ans = dfs(queries[i][0], queries[i][1], queries[i][0], 1);
+
+            // If the DFS returns false, then we can't find the answer of this query. Then we just push -1 as the answer.
+            answer.push_back((ans.second) ? ans.first : -1);
+        }
+    }
+```
+
+And we put all this code together, and we're done.
 
 ```cpp
 class Solution {
