@@ -4,5 +4,11 @@
 
 ## Problems to do
 
+### Easy
+- Problem 1 - [Substrings of size 3 with distinct characters](https://leetcode.com/problems/substrings-of-size-three-with-distinct-characters/)
+- Problem 2 - [K-beauty of a number](https://leetcode.com/problems/find-the-k-beauty-of-a-number/)
+
+
+### A bit more challenging
 - Problem 1 - [Longest repeating character replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
 - Problem 2 - [Substring with concatenation of all words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
