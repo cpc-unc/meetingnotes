@@ -10,5 +10,5 @@
 
 
 ### A bit more challenging
-- Problem 1 - [Longest repeating character replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
-- Problem 2 - [Substring with concatenation of all words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
+- Problem 3 - [Longest repeating character replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+- Problem 4 - [Substring with concatenation of all words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
