@@ -1,4 +1,4 @@
-# Problem H - [Platform Pacing](https://open.kattis.com/problems/platformpacing) (Solution)
+# Problem H - [Platform Placing](https://open.kattis.com/problems/platformplacing) (Solution)
 
 ```cpp
 /*
