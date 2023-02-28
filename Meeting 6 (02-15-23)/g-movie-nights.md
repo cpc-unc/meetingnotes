@@ -1,4 +1,4 @@
-# Problem D - [Movie Night](https://open.kattis.com/problems/movienight) (Solution)
+# Problem G - [Movie Night](https://open.kattis.com/problems/movienight) (Solution)
 
 
 ```cpp
