@@ -4,7 +4,7 @@ Slides: https://docs.google.com/presentation/d/1FJGINP8NqcDvR2IvujHfYUAGFDHURvCv
 
 ## Problems to do
 
-- Problem 1 - [Maximum matching of players with trainers](https://leetcode.com/problems/maximum-matching-of-players-with-trainers/)
-- Problem 2 - [Two bases](https://codeforces.com/problemset/problem/602/A)
-- Problem 3 - [National project](https://codeforces.com/problemset/problem/1303/B)
-- Problem 4 - [Vupsen, pupsen and 0](https://codeforces.com/problemset/problem/1582/D)
+- Problem 1 - [Center alignment](https://codeforces.com/contest/5/problem/B)
+- Problem 2 - [Stripe](https://codeforces.com/contest/18/problem/C)
+- Problem 3 - [Minimize price of trips](https://leetcode.com/problems/minimize-the-total-price-of-the-trips/description/)
+- Problem 4 - [NP-Hard problem](https://codeforces.com/contest/687/problem/A)
